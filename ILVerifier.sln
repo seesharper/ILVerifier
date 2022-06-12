@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A4639EF3-19E7-4F4D-BFAF-616F82F3BFF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILVerifer", "src\ILVerifer\ILVerifer.csproj", "{4239A023-6159-4ED8-A0BA-65BF6EFE410F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILVerifier.Tests", "src\ILVerifier.Tests\ILVerifier.Tests.csproj", "{A4897C35-AF4D-4F9C-8601-CE477668AE21}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4239A023-6159-4ED8-A0BA-65BF6EFE410F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4239A023-6159-4ED8-A0BA-65BF6EFE410F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4239A023-6159-4ED8-A0BA-65BF6EFE410F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4239A023-6159-4ED8-A0BA-65BF6EFE410F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4897C35-AF4D-4F9C-8601-CE477668AE21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4897C35-AF4D-4F9C-8601-CE477668AE21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4897C35-AF4D-4F9C-8601-CE477668AE21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4897C35-AF4D-4F9C-8601-CE477668AE21}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4239A023-6159-4ED8-A0BA-65BF6EFE410F} = {A4639EF3-19E7-4F4D-BFAF-616F82F3BFF0}
+		{A4897C35-AF4D-4F9C-8601-CE477668AE21} = {A4639EF3-19E7-4F4D-BFAF-616F82F3BFF0}
+	EndGlobalSection
+EndGlobal
