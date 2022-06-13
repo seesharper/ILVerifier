@@ -5,55 +5,91 @@ using System.Reflection;
 using System.Text;
 using Lokad.ILPack;
 using static SimpleExec.Command;
-namespace ILVerifer;
+namespace ILVerifier;
+
+
 public class Verifier
 {
     private TextWriter _standardOutTextWriter = Console.Out;
 
     private string _pathToVerifiedAssembly;
 
-    public List<Assembly> _referencedAssemblies { get; } = new List<Assembly>();
+    private readonly List<Assembly> _referencedAssemblies = new();
 
     private VerbosityLevel _verbosityLevel = VerbosityLevel.Quiet;
 
     private string _pathToILVerify = "ilverify";
 
+    /// <summary>
+    /// Sets the specified <see cref="VerbosityLevel"/>.
+    /// </summary>
+    /// <param name="verbosity">The <see cref="VerbosityLevel"/> to be used.</param>
+    /// <returns><see cref="Verifier"/></returns>
     public Verifier WithVerbosityLevel(VerbosityLevel verbosity)
     {
         _verbosityLevel = verbosity;
         return this;
     }
 
+    /// <summary>
+    /// Adds an assembly reference to the verifier.
+    /// </summary>
+    /// <param name="assembly">The assembly for which to add a reference.</param>
+    /// <returns><see cref="Verifier"/></returns>
     public Verifier WithAssemblyReference(Assembly assembly)
     {
         _referencedAssemblies.Add(assembly);
         return this;
     }
 
+    /// <summary>
+    /// Adds an assembly reference to the verifier based on the given <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The type from which to add an assembly reference.</typeparam>
+    /// <returns><see cref="Verifier"/></returns>
     public Verifier WithAssemblyReferenceFromType<T>()
     {
         WithAssemblyReference(typeof(T).Assembly);
         return this;
     }
 
+    /// <summary>
+    /// Sets the path to the "ILVerify" tool.
+    /// </summary>
+    /// <param name="pathToILVerify">The full path to the "ILVerify" tool.</param>
+    /// <returns><see cref="Verifier"/></returns>
     public Verifier WithPathToILVerify(string pathToILVerify)
     {
         _pathToILVerify = pathToILVerify;
         return this;
     }
 
+    /// <summary>
+    /// Sets the path to the generated assembly to be verified.
+    /// </summary>
+    /// <param name="pathToVerifiedAssembly">A fully qualified or relative path to the generated assembly to be verified.</param>
+    /// <returns><see cref="Verifier"/></returns>
     public Verifier WithVerifiedAssemblyPath(string pathToVerifiedAssembly)
     {
         _pathToVerifiedAssembly = pathToVerifiedAssembly;
         return this;
     }
 
+    /// <summary>
+    /// Sets the <see cref="TextWriter"/> to used to forward standard out from "ILVerify".
+    /// </summary>
+    /// <param name="standardOutTextWriter">A <see cref="TextWriter"/> to used to forward standard out from "ILVerify".</param>
+    /// <returns><see cref="Verifier"/></returns>
     public Verifier WithStandardOutTo(TextWriter standardOutTextWriter)
     {
         _standardOutTextWriter = standardOutTextWriter;
         return this;
     }
 
+    /// <summary>
+    /// Verifies the IL of the specified <paramref name="assembly"/>.
+    /// </summary>
+    /// <param name="assembly">The <see cref="Assembly"/> to be verified.</param>
     public void Verify(Assembly assembly)
     {
         EnsureILVerifyIsInstalled();
@@ -107,7 +143,6 @@ public class Verifier
     };
 
     private static string Quote(string value) => $"\"{value}\"";
-
 
     private static void SaveAssemblyToDisc(Assembly assembly, string fileName)
     {

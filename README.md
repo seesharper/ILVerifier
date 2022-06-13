@@ -1,5 +1,5 @@
 ```csharp
-new Verifer.Verify(assembly);
+new Verifier.Verify(assembly);
 ```
 
 ```csharp

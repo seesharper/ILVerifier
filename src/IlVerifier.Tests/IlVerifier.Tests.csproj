@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ILVerifer\ILVerifer.csproj" />
+    <ProjectReference Include="..\ILVerifier\ILVerifier.csproj" />
   </ItemGroup>
 
 </Project>

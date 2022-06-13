@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection.Emit;
 using System.Text;
 using FluentAssertions;
-using ILVerifer;
+
 public class VerifierTests
 {
     [Fact]
@@ -46,7 +46,7 @@ public class VerifierTests
     }
 
     [Fact]
-    public async void ShouldOutputNormalVerbosityLevel()
+    public void ShouldOutputNormalVerbosityLevel()
     {
         StringWriter standardOut = new();
 
@@ -61,7 +61,7 @@ public class VerifierTests
     }
 
     [Fact]
-    public async void ShouldOutputDetailedVerbosityLevel()
+    public void ShouldOutputDetailedVerbosityLevel()
     {
         StringWriter standardOut = new();
 
@@ -77,7 +77,7 @@ public class VerifierTests
     }
 
     [Fact]
-    public async void ShouldOutputDiagnosticsVerbosityLevel()
+    public void ShouldOutputDiagnosticsVerbosityLevel()
     {
         StringWriter standardOut = new();
 
@@ -94,7 +94,7 @@ public class VerifierTests
     }
 
     [Fact]
-    public async void ShouldThrowExceptionWhenILVerifyIsMissing()
+    public void ShouldThrowExceptionWhenILVerifyIsMissing()
     {
         var verifier = new Verifier()
             .WithAssemblyReferenceFromType<Verifier>()
