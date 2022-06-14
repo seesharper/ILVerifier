@@ -7,6 +7,9 @@ This library is aimed at developers that uses [System.Reflection.Emit](https://d
 ## Verifying IL
 For years, the only tool available for verifying assemblies was a tool called [Peverify](https://docs.microsoft.com/en-us/dotnet/framework/tools/peverify-exe-peverify-tool). This is a command line tool that is only available for .Net Framework and Mono. [ILVerify](https://github.com/dotnet/runtime/blob/main/src/coreclr/tools/ILVerify/README.md) is a new tool from Microsoft that is meant to be a replacement for [Peverify](https://docs.microsoft.com/en-us/dotnet/framework/tools/peverify-exe-peverify-tool). It is currently only available as a global tool [package](https://www.nuget.org/packages/dotnet-ilverify) and this means that to use this tool in unit tests, we need to run it with a set of arguments in its own process. Most importantly , we need an assembly written to disk before we can verify it. 
 
+## Prerequisite
+
+Install the global tool [IlVerify](https://www.nuget.org/packages/dotnet-ilverify/) from NuGet. 
 
 ## Usage 
 
