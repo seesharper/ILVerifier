@@ -10,6 +10,8 @@ For years, the only tool available for verifying assemblies was a tool called [P
 
 ## Usage 
 
+Install from [NuGet](https://www.nuget.org/packages/ILVerifier/)
+
 `ILVerifier` can handle both existing assemblies already on disk or assemblies that are dynamically created using [AssemblyBuilder](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.assemblybuilder).
 
 Example with an existing assembly 
