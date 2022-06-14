@@ -4,9 +4,10 @@ using FluentAssertions;
 
 namespace ILVerifier.Tests;
 
+[Collection("VerificationTests")]
 public class DynamicMethodTests
 {
-    private IMethodSkeleton GetMethodSkeleton(string name, Type returnType, Type[] parameterTypes)
+    protected virtual IMethodSkeleton GetMethodSkeleton(string name, Type returnType, Type[] parameterTypes)
     {
         return new DynamicMethodSkeleton(name, returnType, parameterTypes, typeof(DynamicMethodTests));
     }
@@ -21,8 +22,9 @@ public class DynamicMethodTests
         generator.Emit(OpCodes.Add);
         generator.Emit(OpCodes.Ret);
 
-        var addDelegate = methodSkeleton.CreateDelegate<Func<int, int, int>>();
-        // var result = addDelegate(8, 7);
-        // result.Should().Be(15);
+        //var addDelegate = methodSkeleton.CreateDelegate<Func<int, int, int>>(); NOTE: ILPack failes with this method. 
+        var addDelegate = (Func<int, int, int>)methodSkeleton.CreateDelegate(typeof(Func<int, int, int>));
+        var result = addDelegate(8, 7);
+        result.Should().Be(15);
     }
 }

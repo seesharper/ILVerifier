@@ -89,6 +89,17 @@ public class Verifier
     }
 
     /// <summary>
+    /// Verifies the IL of the specified <paramref name="pathToAssembly"/>.
+    /// </summary>
+    /// <param name="pathToAssembly">The fully qualified path to the <see cref="Assembly"/> to be verified.</param>
+    public void Verify(string pathToAssembly)
+    {
+        EnsureILVerifyIsInstalled();
+        var fileName = pathToAssembly;
+        VerifyAssembly(fileName);
+    }
+
+    /// <summary>
     /// Verifies the IL of the specified <paramref name="assembly"/>.
     /// </summary>
     /// <param name="assembly">The <see cref="Assembly"/> to be verified.</param>

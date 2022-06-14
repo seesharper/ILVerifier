@@ -6,15 +6,29 @@ using System.Reflection.Emit;
 using System.Text;
 using FluentAssertions;
 
+[Collection("VerificationTests")]
 public class VerifierTests
 {
     [Fact]
     public void ShouldVerifyAssembly()
     {
+        // Note that this failes if saved by ILPack if we use CreateDelagate extension method Try to create an issue for this
+        /*
+        IL]: Error [StackUnexpected]: [/home/runner/work/ILVerifier/ILVerifier/src/IlVerifier.Tests/bin/Release/net6.0/VerifiedAssembly.dll : ILVerifier.Tests.DynamicMethodTests::ShouldAddNumbers()][offset 0x0000006F][found ref '!!0'][expected ref '[S.P.CoreLib]System.Func`3<int32,int32,int32>'] Unexpected type on the stack.
+        */
         new Verifier()
             .WithAssemblyReferenceFromType<Verifier>()
             .WithAssemblyReference(typeof(FluentActions).Assembly)
             .Verify(typeof(VerifierTests).Assembly);
+    }
+
+    [Fact]
+    public void ShouldVerifyAssemblyUsingAssemblyFile()
+    {
+        new Verifier()
+            .WithAssemblyReferenceFromType<Verifier>()
+            .WithAssemblyReference(typeof(FluentActions).Assembly)
+            .Verify(typeof(VerifierTests).Assembly.Location);
     }
 
     [Fact]
@@ -90,7 +104,7 @@ public class VerifierTests
 
         standardOut.ToString().Should().Contain("All Classes and Methods in");
         standardOut.ToString().Should().Contain("Types found");
-        standardOut.ToString().Should().Contain("Verifying [IlVerifier.Tests]ILVerifier.Tests.VerifierTests");
+        standardOut.ToString().Should().Contain("Verifying [ILVerifier.Tests]ILVerifier.Tests.VerifierTests");
     }
 
     [Fact]
@@ -115,7 +129,7 @@ public class VerifierTests
         generator.Emit(OpCodes.Add);
         generator.Emit(OpCodes.Ret);
 
-        Action createDelegate = () => method.CreateDelegate<Func<int, int, int>>();
+        Action createDelegate = () => method.CreateDelegate(typeof(Func<int, int, int>));
         createDelegate.Should().NotThrow();
     }
 
@@ -128,7 +142,7 @@ public class VerifierTests
         generator.Emit(OpCodes.Ldarg_1);
         generator.Emit(OpCodes.Add);
 
-        Action createDelegate = () => method.CreateDelegate<Func<int, int, int>>();
+        Action createDelegate = () => method.CreateDelegate(typeof(Func<int, int, int>));
         createDelegate.Should().Throw<InvalidProgramException>();
     }
 }
