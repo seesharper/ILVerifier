@@ -1,21 +1,66 @@
-# ILVerfier
+# ILVerifier
 
 ## Introduction
 
 This library is aimed at developers that uses [System.Reflection.Emit](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit) to either modify existing assemblies or dynamically generate code at runtime. 
 
 ## Verifying IL
-For years, the only tool available for verifying assemblies was a tool called [Peverify](https://docs.microsoft.com/en-us/dotnet/framework/tools/peverify-exe-peverify-tool). This is a command line tool that is only available for .Net Framework and Mono. [ILVerify](https://github.com/dotnet/runtime/blob/main/src/coreclr/tools/ILVerify/README.md) is a new tool from Microsoft that is meant to be a replacement for [Peverify](https://docs.microsoft.com/en-us/dotnet/framework/tools/peverify-exe-peverify-tool). It is currently only available as a global tool [package](https://www.nuget.org/packages/dotnet-ilverify) and this means that to use this tool in unit tests, we need to run it with a set of arguments in its own process. Most importantly , we need an assembly written to disc before we can verify it. 
+For years, the only tool available for verifying assemblies was a tool called [Peverify](https://docs.microsoft.com/en-us/dotnet/framework/tools/peverify-exe-peverify-tool). This is a command line tool that is only available for .Net Framework and Mono. [ILVerify](https://github.com/dotnet/runtime/blob/main/src/coreclr/tools/ILVerify/README.md) is a new tool from Microsoft that is meant to be a replacement for [Peverify](https://docs.microsoft.com/en-us/dotnet/framework/tools/peverify-exe-peverify-tool). It is currently only available as a global tool [package](https://www.nuget.org/packages/dotnet-ilverify) and this means that to use this tool in unit tests, we need to run it with a set of arguments in its own process. Most importantly , we need an assembly written to disk before we can verify it. 
 
-## Saving assemblies to disc
 
-This is the next problem we need to deal with since .Net Core does not really allow dynamically created assemblies to be saved to disc. We used to have [AssemblyBuilderAccess.RunAndSave](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.assemblybuilderaccess?view=netframework-4.8), but that is not available on .Net Core. The issue being tracked [here](https://github.com/dotnet/runtime/issues/15704), but it remains open since it was create in 2015.
+## Usage 
 
-Say something about [Lokad.ILPack](https://github.com/Lokad/ILPack) 
+`ILVerifier` can handle both existing assemblies already on disk or assemblies that are dynamically created using [AssemblyBuilder](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.assemblybuilder).
+
+Example with an existing assembly 
+
+```csharp
+ new Verifier().Verify(typeof(Foo).Assembly.Location);                
+```
+
+Example with just an assembly reference 
+
+```csharp
+ new Verifier().Verify(typeof(Foo).Assembly);                
+```
+
+### Assembly references
+
+If the assembly to be verified references other assemblies these also need to be specified using the `WithAssemblyReference` method.
+Say that we have a `FooAssembly` that references `BarAssembly`
+Typically we will get an error saying something like 
+
+```
+Assembly or module not found: BarAssembly
+```
+
+> Note: `MyAssembly` is just an example of a missing assembly reference
+
+Solve this by adding a reference like this
+
+```csharp
+ new Verifier()     
+    .WithAssemblyReference(typeof(Bar).Assembly)
+    .Verify(typeof(Foo).Assembly);
+```
+
+Alteratively we can specify the assembly reference through type contained in the referenced assembly.
+
+```csharp
+new Verifier()     
+    .WithAssemblyReferenceFromType<Bar>()
+    .Verify(typeof(Foo).Assembly);
+```
+
+## Saving assemblies to disk
+
+This is the next problem we need to deal with since .Net Core does not really allow dynamically created assemblies to be saved to disk. We used to have [AssemblyBuilderAccess.RunAndSave](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.assemblybuilderaccess?view=netframework-4.8), but that is not available on .Net Core. The issue being tracked [here](https://github.com/dotnet/runtime/issues/15704), but it remains open since it was create in 2015.
+
+Luckily for us, there is a excellent library called [Lokad.ILPack](https://github.com/Lokad/ILPack) that fills the gap of being able to save an assembly to disk
 
 ## DynamicMethod
 
-Creating new assemblies using AssemblyBuilder and friends is one thing since then we actually have an assembly to be saved to disk using [Lokad.ILPack](https://github.com/Lokad/ILPack). Another thing is if we create new code using [DynamicMethod](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.dynamicmethod). Then it is not so trivial since the assembly hosting the dynamic method is not really accessible to us and thus it cannot be saved to disc. 
+Creating new assemblies using AssemblyBuilder and friends is one thing since then we actually have an assembly to be saved to disk using [Lokad.ILPack](https://github.com/Lokad/ILPack). Another thing is if we create new code using [DynamicMethod](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.dynamicmethod). Then it is not so trivial since the assembly hosting the dynamic method is not really accessible to us and thus it cannot be saved to disk. 
 
 ## IMethodSkeleton
 
@@ -216,4 +261,5 @@ Now, that is useful information and we could in most cases understand what cause
 
 ## Summary
 
-Once more, this library is just standing on the shoulders of two other giants. It would not have been possible without [Lokad.ILPack](https://github.com/Lokad/ILPack) for saving assemblies to disc or without [ILVerify](https://github.com/dotnet/runtime/blob/main/src/coreclr/tools/ILVerify/README.md) for actually verifying assemblies. Then again, I hope that this library can make it a little easier to get started with IL verification for .Net developers and that the example of abstracting the building of dynamic methods into `IMethodSkeleton` made some sense. 
+Once more, this library is just standing on the shoulders of two other giants. It would not have been possible without [Lokad.ILPack](https://github.com/Lokad/ILPack) for saving assemblies to disk or without [ILVerify](https://github.com/dotnet/runtime/blob/main/src/coreclr/tools/ILVerify/README.md) for actually verifying assemblies. It would simply be impossible for someone to create a library like this from scratch. 
+Then again, I hope that this library can make it a little easier to get started with IL verification for .Net developers and that the example of abstracting the building of dynamic methods into `IMethodSkeleton` made some sense. 
