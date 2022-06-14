@@ -15,7 +15,7 @@ jobs:
       - name: Install dotnet-script
         run: dotnet tool install dotnet-script --tool-path dotnet-script-tool
       - name: Install dotnet-ilverify
-        run: dotnet tool install dotnet-ilverify -g
+        run: dotnet tool install --global dotnet-ilverify --version 7.0.0-preview.4.22229.4
 
       - name: Run build script
         run: dotnet-script-tool/dotnet-script build/build.csx
