@@ -1,6 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <Authors>Bernhard Richter</Authors>
+    <Description>A simple helper library to access provider-specific types when working with IDbConnection and friends.</Description>
+    <Copyright>Bernhard Richter</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/seesharper/ILVerify</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dotnet IL verify</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>0.0.1</Version>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>

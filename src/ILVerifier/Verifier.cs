@@ -7,7 +7,9 @@ using Lokad.ILPack;
 using static SimpleExec.Command;
 namespace ILVerifier;
 
-
+/// <summary>
+/// Verifies IL (Intermediate Language) code from any .Net assembly.   
+/// </summary>
 public class Verifier
 {
     private TextWriter _standardOutTextWriter = Console.Out;

@@ -29,7 +29,7 @@ public class VerifiableMethodSkeleton : IMethodSkeleton
     private void CreateMethodBuilder(Type returnType, Type[] parameterTypes)
     {
         methodBuilder = typeBuilder.DefineMethod(
-            "DynamicMethod", MethodAttributes.Public | MethodAttributes.Static, returnType, parameterTypes);
+            name, MethodAttributes.Public | MethodAttributes.Static, returnType, parameterTypes);
         methodBuilder.InitLocals = true;
     }
 
@@ -39,7 +39,7 @@ public class VerifiableMethodSkeleton : IMethodSkeleton
     {
         var dynamicType = typeBuilder.CreateType();
         new Verifier().Verify(dynamicType.Assembly);
-        MethodInfo methodInfo = dynamicType.GetMethod("DynamicMethod", BindingFlags.Static | BindingFlags.Public);
+        MethodInfo methodInfo = dynamicType.GetMethod(name, BindingFlags.Static | BindingFlags.Public);
         return Delegate.CreateDelegate(delegateType, methodInfo);
     }
 }
